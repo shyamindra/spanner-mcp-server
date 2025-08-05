@@ -135,6 +135,21 @@ class SpannerMCPServer {
         ]
       };
     });
+
+    // Add health check handler
+    this.server.setRequestHandler('health/check', async () => {
+      const isConnected = await this.spannerClient.testConnection();
+      return {
+        status: isConnected ? 'healthy' : 'unhealthy',
+        timestamp: new Date().toISOString(),
+        version: '1.0.0',
+        uptime: process.uptime(),
+        memory: process.memoryUsage(),
+        spanner: {
+          connected: isConnected
+        }
+      };
+    });
   }
 
   private setupErrorHandling() {
