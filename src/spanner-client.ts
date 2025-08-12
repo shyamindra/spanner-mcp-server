@@ -47,7 +47,7 @@ export class SpannerClient {
     }
   }
 
-  async executeQuery(sql: string, params?: any): Promise<QueryResult> {
+  async executeQuery(sql: string, params?: Record<string, unknown>): Promise<QueryResult> {
     const startTime = Date.now();
     
     try {
